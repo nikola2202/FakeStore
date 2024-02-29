@@ -40,6 +40,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -53,6 +57,9 @@ dependencies {
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
     implementation ("com.squareup.okhttp3:okhttp")
     implementation ("com.squareup.okhttp3:logging-interceptor")
+
+    // Coil (image loading)
+    implementation ("io.coil-kt:coil:2.1.0")
 
     //Hilt
     val hilt_version = "2.50"
