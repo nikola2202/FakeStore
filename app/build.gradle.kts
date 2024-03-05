@@ -61,8 +61,10 @@ dependencies {
     // Coil (image loading)
     implementation ("io.coil-kt:coil:2.1.0")
 
+    // Facebook shimmer (loading state)
+    implementation ("com.facebook.shimmer:shimmer:0.5.0")
 
-//Epoxy
+    //Epoxy(RecyclerView)
     val epoxyVersion = "5.1.2"
     implementation ("com.airbnb.android:epoxy:$epoxyVersion")
     kapt("com.airbnb.android:epoxy-processor:$epoxyVersion")
