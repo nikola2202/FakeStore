@@ -61,6 +61,12 @@ dependencies {
     // Coil (image loading)
     implementation ("io.coil-kt:coil:2.1.0")
 
+
+//Epoxy
+    val epoxyVersion = "5.1.2"
+    implementation ("com.airbnb.android:epoxy:$epoxyVersion")
+    kapt("com.airbnb.android:epoxy-processor:$epoxyVersion")
+
     //Hilt
     val hilt_version = "2.50"
     implementation("com.google.dagger:hilt-android:$hilt_version")
