@@ -1,16 +1,17 @@
 package com.example.fakestore
 
 import androidx.lifecycle.viewModelScope
+import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.TypedEpoxyController
-import com.example.fakestore.model.ui.UiProduct
+import com.example.fakestore.model.domain.Filter
 import kotlinx.coroutines.launch
 
 class UiProductEpoxyController(
     private val viewModel: ProductsListViewModel
-): TypedEpoxyController<List<UiProduct>>() {
-    override fun buildModels(data: List<UiProduct>?) {
+): TypedEpoxyController<ProductsListFragmentUiState>() {
+    override fun buildModels(data: ProductsListFragmentUiState?) {
 
-        if (data.isNullOrEmpty()) {
+        if (data == null) {
             repeat(7) {
                 val epoxyId = it + 1
                 UiProductEpoxyModel(
@@ -22,7 +23,13 @@ class UiProductEpoxyController(
             return
         }
 
-        data.forEach { uiProduct ->
+        val uiFilterModels = data.filters.map { uiFilter ->
+            UiProductFilterEpoxyModel(uiFilter = uiFilter, onFilterSelected = ::onFilterSelected)
+                .id(uiFilter.filter.value)
+        }
+        CarouselModel_().models(uiFilterModels).id("filters").addTo(this)
+
+        data.products.forEach { uiProduct ->
             UiProductEpoxyModel(
                 uiProduct = uiProduct,
                 onFavoriteIconClicked = ::onFavoriteIconClicked,
@@ -54,6 +61,23 @@ class UiProductEpoxyController(
                     currentExpandedIds + setOf(productId)
                 }
                 return@update currentState.copy(expandedProductIds = newExpandedIds)
+            }
+        }
+    }
+
+    private fun onFilterSelected(filter: Filter) {
+        viewModel.viewModelScope.launch {
+            viewModel.store.update { currentState ->
+                val currentlySelectedState = currentState.productFilterInfo.selectedFilter
+                return@update currentState.copy(
+                    productFilterInfo = currentState.productFilterInfo.copy(
+                        selectedFilter = if (currentlySelectedState != filter) {
+                            filter
+                        } else {
+                            null
+                        }
+                    )
+                )
             }
         }
     }

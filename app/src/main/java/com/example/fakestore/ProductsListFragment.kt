@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.asLiveData
 import com.example.fakestore.databinding.FragmentProductsListBinding
+import com.example.fakestore.model.ui.UiFilter
 import com.example.fakestore.model.ui.UiProduct
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combine
@@ -36,22 +37,39 @@ class ProductsListFragment: Fragment() {
 
         val controller = UiProductEpoxyController(viewModel)
         binding.epoxyRecyclerView.setController(controller)
-        controller.setData(emptyList())
+        //controller.setData(emptyList())
 
         combine(
             viewModel.store.stateFlow.map { it.products },
             viewModel.store.stateFlow.map { it.favoriteProductIds },
-            viewModel.store.stateFlow.map { it.expandedProductIds }
-        ) { listOfProducts,setOfFavoriteIds,setOfExpandedProductIds ->
-            listOfProducts.map { product ->
+            viewModel.store.stateFlow.map { it.expandedProductIds },
+            viewModel.store.stateFlow.map { it.productFilterInfo }
+        ) { listOfProducts,setOfFavoriteIds,setOfExpandedProductIds,productFilterInfo ->
+            val uiProducts = listOfProducts.map { product ->
                 UiProduct(
                     product = product,
                     isFavorite = setOfFavoriteIds.contains(product.id),
                     isExpanded = setOfExpandedProductIds.contains(product.id)
                 )
             }
-        }.distinctUntilChanged().asLiveData().observe(viewLifecycleOwner) { uiProducts ->
-            controller.setData(uiProducts)
+
+            val uiFilters = productFilterInfo.filters.map { filter ->
+                UiFilter(
+                    filter = filter,
+                    isSelected = productFilterInfo.selectedFilter?.equals(filter) == true
+                )
+            }.toSet()
+
+            val filteredProducts = if (productFilterInfo.selectedFilter == null) {
+                uiProducts
+            }else {
+                uiProducts.filter { it.product.category == productFilterInfo.selectedFilter.value }
+            }
+
+            return@combine ProductsListFragmentUiState(uiFilters,filteredProducts)
+
+        }.distinctUntilChanged().asLiveData().observe(viewLifecycleOwner) { uiState ->
+            controller.setData(uiState)
         }
 
 
