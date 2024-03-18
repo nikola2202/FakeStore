@@ -8,8 +8,13 @@
     <fragment
         android:id="@+id/productsListFragment"
         android:name="com.example.fakestore.ProductsListFragment"
-        android:label="Products list"
+        android:label="All products"
         tools:layout="@layout/fragment_products_list"/>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.fakestore.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile"/>
 
 
 </navigation>
