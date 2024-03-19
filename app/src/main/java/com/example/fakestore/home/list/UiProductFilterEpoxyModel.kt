@@ -1,7 +1,8 @@
-package com.example.fakestore
+package com.example.fakestore.home.list
 
 import androidx.core.content.ContextCompat
 import com.airbnb.epoxy.kotlinsample.helpers.ViewBindingKotlinModel
+import com.example.fakestore.R
 import com.example.fakestore.databinding.EpoxyModelProductFilterBinding
 import com.example.fakestore.model.domain.Filter
 import com.example.fakestore.model.ui.UiFilter

@@ -1,4 +1,4 @@
-package com.example.fakestore
+package com.example.fakestore.home.list
 
 import com.example.fakestore.model.ui.UiFilter
 import com.example.fakestore.model.ui.UiProduct

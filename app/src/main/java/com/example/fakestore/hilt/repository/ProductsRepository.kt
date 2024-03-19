@@ -1,4 +1,4 @@
-package com.example.fakestore
+package com.example.fakestore.hilt.repository
 
 import com.example.fakestore.hilt.service.ProductsService
 import com.example.fakestore.model.domain.Product

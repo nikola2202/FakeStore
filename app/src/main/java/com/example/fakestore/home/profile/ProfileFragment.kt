@@ -1,10 +1,9 @@
-package com.example.fakestore
+package com.example.fakestore.home.profile
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.fakestore.R
 import com.example.fakestore.databinding.FragmentProfileBinding
 
 class ProfileFragment: Fragment(R.layout.fragment_profile) {

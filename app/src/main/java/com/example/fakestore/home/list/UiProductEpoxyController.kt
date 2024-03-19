@@ -1,4 +1,4 @@
-package com.example.fakestore
+package com.example.fakestore.home.list
 
 import androidx.lifecycle.viewModelScope
 import com.airbnb.epoxy.CarouselModel_

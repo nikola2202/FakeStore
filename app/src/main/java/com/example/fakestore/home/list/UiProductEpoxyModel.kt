@@ -1,12 +1,12 @@
-package com.example.fakestore
+package com.example.fakestore.home.list
 
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import coil.load
 import com.airbnb.epoxy.kotlinsample.helpers.ViewBindingKotlinModel
+import com.example.fakestore.R
 import com.example.fakestore.databinding.EpoxyModelProductItemBinding
-import com.example.fakestore.model.domain.Product
 import com.example.fakestore.model.ui.UiProduct
 import java.text.NumberFormat
 
