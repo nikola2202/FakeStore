@@ -5,36 +5,43 @@ import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.TypedEpoxyController
 import com.example.fakestore.model.domain.Filter
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class UiProductEpoxyController(
     private val viewModel: ProductsListViewModel
 ): TypedEpoxyController<ProductsListFragmentUiState>() {
     override fun buildModels(data: ProductsListFragmentUiState?) {
 
-        if (data == null) {
-            repeat(7) {
-                val epoxyId = it + 1
-                UiProductEpoxyModel(
-                    uiProduct = null,
-                    onFavoriteIconClicked = ::onFavoriteIconClicked,
-                    onUiProductClicked = ::onUiProductClicked
-                ).id(epoxyId).addTo(this)
+        when (data) {
+            is ProductsListFragmentUiState.Success -> {
+                val uiFilterModels = data.filters.map { uiFilter ->
+                    UiProductFilterEpoxyModel(uiFilter = uiFilter, onFilterSelected = ::onFilterSelected)
+                        .id(uiFilter.filter.value)
+                }
+                CarouselModel_().models(uiFilterModels).id("filters").addTo(this)
+
+                data.products.forEach { uiProduct ->
+                    UiProductEpoxyModel(
+                        uiProduct = uiProduct,
+                        onFavoriteIconClicked = ::onFavoriteIconClicked,
+                        onUiProductClicked = ::onUiProductClicked
+                    ).id(uiProduct.product.id).addTo(this)
+                }
             }
-            return
-        }
+            is ProductsListFragmentUiState.Loading -> {
+                repeat(7) {
+                    val epoxyId = UUID.randomUUID().toString()
+                    UiProductEpoxyModel(
+                        uiProduct = null,
+                        onFavoriteIconClicked = ::onFavoriteIconClicked,
+                        onUiProductClicked = ::onUiProductClicked
+                    ).id(epoxyId).addTo(this)
+                }
+            }
 
-        val uiFilterModels = data.filters.map { uiFilter ->
-            UiProductFilterEpoxyModel(uiFilter = uiFilter, onFilterSelected = ::onFilterSelected)
-                .id(uiFilter.filter.value)
-        }
-        CarouselModel_().models(uiFilterModels).id("filters").addTo(this)
-
-        data.products.forEach { uiProduct ->
-            UiProductEpoxyModel(
-                uiProduct = uiProduct,
-                onFavoriteIconClicked = ::onFavoriteIconClicked,
-                onUiProductClicked = ::onUiProductClicked
-            ).id(uiProduct.product.id).addTo(this)
+            else -> {
+                throw RuntimeException("Unhandled branch! $data")
+            }
         }
     }
 

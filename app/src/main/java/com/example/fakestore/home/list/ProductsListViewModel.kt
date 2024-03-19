@@ -8,6 +8,7 @@ import com.example.fakestore.model.domain.Product
 import com.example.fakestore.redux.ApplicationState
 import com.example.fakestore.redux.Store
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,6 +22,7 @@ class ProductsListViewModel @Inject constructor(
     fun refreshProducts() = viewModelScope.launch {
         val products: List<Product> = productsRepository.fetchAllProducts()
         val filters: Set<Filter> = filterGenerator.generateFrom(products)
+        delay(1500)
         store.update { applicationState ->
             return@update applicationState.copy(
                 products = products,
