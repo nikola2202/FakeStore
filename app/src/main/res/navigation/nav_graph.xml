@@ -15,6 +15,11 @@
         android:name="com.example.fakestore.home.profile.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile"/>
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.example.fakestore.home.cart.CartFragment"
+        android:label="Your cart"
+        tools:layout="@layout/fragment_cart"/>
 
 
 </navigation>
